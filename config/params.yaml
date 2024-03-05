@@ -1,0 +1,61 @@
+directory_file_prefix_map:
+  estable-arboreo-ts: ESTABLE
+  sequia-arboreo-ts: SEQUIA
+  tala-arboreo-ts: TALA
+  incendio-arboreo-ts: INCENDIO
+  varios-arboreo-ts: VARIOS
+
+selected_directories:
+  - estable-arboreo-ts
+  - sequia-arboreo-ts
+  - tala-arboreo-ts
+  - incendio-arboreo-ts
+
+column_conventions:
+  latitude: lat
+  longitude: lon
+  NAME: change_type
+  Finicio: change_start
+  ORIGdesde: vegetation_type
+  ID: pol_id
+  IDpix: pix_id
+
+vegetation_type_conventions:
+  NATIVO: native
+  EXOTICO: exotic
+  MIXTO: mixed
+
+change_type_conventions:
+  estable: stable
+  incendio: fire
+  sequia: drought
+  tala: logging
+
+excluded_cols:
+  - system.index
+  - KML_FOLDER
+  - cobDesde
+  - cobHasta
+  - MAXsequia
+  - incendio
+  - Isequia
+  - disturbed
+  - Fsequia
+  - AREA_HA
+  - PERIM_M
+  - Ffinal
+  - Fultima
+  - nPIXxPOL
+
+esn_training_percentage: 0.3
+
+metadata_columns:
+  - lat
+  - lon
+  - change_type
+  - change_start
+  - vegetation_type
+
+event_threshold: 01-01-2010
+
+random_seed: 0
