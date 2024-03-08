@@ -58,4 +58,42 @@ metadata_columns:
 
 event_threshold: 01-01-2010
 
+megadrought_threshold: 01-01-2020
+
+non_change_placeholder_date: 01-01-1800
+
 random_seed: 0
+
+save_interval: 1
+
+weeks_after_change_offset: 5
+
+step_size: 1
+
+esn_features_dim: 104
+
+fault_detection_forecasted_steps: 52
+
+N_values:
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+
+k_values:
+ - 0.93
+ - 0.94
+ - 0.95
+ - 0.96
+ - 0.97
+ - 0.98
+ - 0.99
+ - 1.0
+
+voting_thresholds:
+  - 0.25
+  - 0.50 
+  - 0.75

@@ -47,36 +47,38 @@ class Forecaster:
         """
         self.model.train(X, y)
 
-    def forecast(self, T: int, warmup_X: np.ndarray) -> np.ndarray:
+    def forecast(self, prediction_length: int, warmup_X: np.ndarray) -> np.ndarray:
         """
-        Generate a prediction sequence of length T using the ESN model.
+        Generate a prediction sequence of specific length using the ESN model.
 
         Args:
-            T (int): The length of the prediction sequence to be generated.
+            prediction_length (int): The length of the prediction sequence to be generated.
             warmup_X (np.ndarray): The input data used for warmup. This should have the same number
                                    of features as specified during initialization.
 
         Returns:
-            np.ndarray: The generated prediction sequence of size (T, 1).
+            np.ndarray: The generated prediction sequence of size (prediction_length, 1).
 
         Raises:
             AssertionError: If the number of features in warmup_X is not consistent with num_features.
         """
         assert warmup_X.shape[1] == self.num_features
 
-        ypred = np.empty((T, 1))
+        ypred = np.empty((prediction_length, 1))
 
         # Reset internal state of the model and feed it a warmup signal
         warmup_y = self.model.run(warmup_X, reset=True)
         last_X = warmup_X[-1]
 
         # Generate the first prediction
-        x = np.concatenate((last_X[-(self.num_features - 1) :].flatten(), warmup_y[-1]))
+        x = np.concatenate(
+            (last_X[-(self.num_features - 1):].flatten(), warmup_y[-1]))
 
         # Generate subsequent predictions
-        for i in range(T):
+        for i in range(prediction_length):
             prediction = self.model.run(x)
-            x = np.concatenate((x[-(self.num_features - 1) :], prediction.flatten()))
+            x = np.concatenate(
+                (x[-(self.num_features - 1):], prediction.flatten()))
             ypred[i] = prediction
 
         return ypred
