@@ -64,7 +64,7 @@ non_change_placeholder_date: 01-01-1800
 
 random_seed: 0
 
-save_interval: 1
+save_interval: 100
 
 weeks_after_change_offset: 5
 
