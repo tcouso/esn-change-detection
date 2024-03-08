@@ -13,11 +13,11 @@ def main() -> None:
     """
     logger = logging.getLogger(__name__)
 
-    # logger.info("Merging NDVI files")
-    # join_ndvi_time_series()
+    logger.info("Merging NDVI files")
+    join_ndvi_time_series()
 
-    # logger.info("Creating ESN and fault detection datasets")
-    # esn_fault_detection_partition()
+    logger.info("Creating ESN and fault detection datasets")
+    esn_fault_detection_partition()
 
     logger.info("Excluding signal previous to megadrought")
     exclude_megadrought_signal()

@@ -58,11 +58,14 @@ def predict_over_pixels(
         y_pred = pd.DataFrame(simulation_results_dict)
 
         assert y_pred.shape[0] == pre_megadrought_fault_detection_metadata_df.iloc[:20].shape[0]
+
         # Sample for plug test
-        y_pred.index = pre_megadrought_fault_detection_metadata_df.iloc[:20].index
+        # y_pred.index = pre_megadrought_fault_detection_metadata_df.iloc[:20].index
+        
+        y_pred.index = pre_megadrought_fault_detection_metadata_df.index
         y_pred["event_date"] = pd.to_datetime(y_pred["event_date"])
 
-        filename = f"predictions_N={N}_k={k}"
+        filename = f"predictions_N={N}_k={k}.csv"
         y_pred_path = paths.data_processed_dir("pixel_predictions", filename)
         create_output_paths([y_pred_path])
 

@@ -56,11 +56,14 @@ def run_simulations(
         pre_megadrought_fault_detection_metadata_path, index_col=["ID", "IDpix"])
     
     # Sample for plug test
-    index_sample = pre_megadrought_fault_detection_df.iloc[:20].index
+    # index_sample = pre_megadrought_fault_detection_df.iloc[:20].index
 
-    y = pre_megadrought_fault_detection_metadata_df["label"].loc[index_sample]
+    # y = pre_megadrought_fault_detection_metadata_df["label"].loc[index_sample]
+    y = pre_megadrought_fault_detection_metadata_df["label"]
 
-    X = pre_megadrought_fault_detection_df.loc[index_sample]
+    # X = pre_megadrought_fault_detection_df.loc[index_sample]
+    X = pre_megadrought_fault_detection_df
+
     X.columns = pd.to_datetime(X.columns)
 
     change_start_dates = pre_megadrought_fault_detection_metadata_df["change_start"]

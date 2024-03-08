@@ -21,14 +21,14 @@ def predict_over_polygons(
 
   for N, k, th in product(N_values, k_values, th_values):
 
-    filename = f"predictions_N={N}_k={k}"
+    filename = f"predictions_N={N}_k={k}.csv"
     pix_pred_path = paths.data_processed_dir("pixel_predictions", filename)
 
     pix_pred = pd.read_csv(pix_pred_path, index_col=["ID", "IDpix"])
 
     poly_pred = pix_pred.groupby("ID")["prediction"].mean().apply(lambda x: 1.0 if x >= th else 0.0)
 
-    filename = f"predictions_N={N}_k={k}_th={th}"
+    filename = f"predictions_N={N}_k={k}_th={th}.csv"
     poly_pred_path = paths.data_processed_dir("poly_predictions", filename)
     create_output_paths([poly_pred_path])
 
