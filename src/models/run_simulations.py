@@ -33,6 +33,8 @@ def run_simulations(
 ):
     logger = logging.getLogger(__name__)
 
+    logger.info("Starting signal simulations")
+
     rpy.verbosity(0)
 
     with open(params_path, "r") as file:
@@ -89,7 +91,6 @@ def run_simulations(
             event_date = change_start_dates.loc[index]
             bounded_signal = signal[: event_date + date_offset]
 
-
         signal_simulation = simulate_signal(
             signal=bounded_signal,
             model=deepcopy(esn),
@@ -109,5 +110,3 @@ def run_simulations(
 
     save_signal_simulations(signal_simulations, simulations_path)
     logger.info("Iterations completed")
-
-
