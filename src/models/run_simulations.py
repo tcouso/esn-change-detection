@@ -33,11 +33,13 @@ def run_simulations(
     simulations_path: Path = paths.data_interim_dir(
         "simulations", "simulations.pickle"),
 ):
+    rpy.verbosity(0)
+
     logger = get_logger()
 
-    logger.info("Starting signal simulations")
-
-    rpy.verbosity(0)
+    msg = "Loading parameters"
+    logger.info(msg)
+    send_telegram_notification(msg)
 
     with open(params_path, "r") as file:
         params = yaml.safe_load(file)
@@ -53,6 +55,10 @@ def run_simulations(
     date_offset = pd.DateOffset(
         weeks=weeks_after_change_offset
     )
+
+    msg = "Loading datasets"
+    logger.info(msg)
+    send_telegram_notification(msg)
 
     pre_megadrought_fault_detection_df = pd.read_csv(
         pre_megadrought_fault_detection_dataset_path, index_col=["ID", "IDpix"])
@@ -73,6 +79,10 @@ def run_simulations(
     change_start_dates = pre_megadrought_fault_detection_metadata_df["change_start"]
     change_start_dates = pd.to_datetime(change_start_dates)
 
+    msg = "Loading model"
+    logger.info(msg)
+    send_telegram_notification(msg)
+
     with open(trained_esn_path, "rb") as file:
         esn = pickle.load(file)
 
@@ -84,7 +94,6 @@ def run_simulations(
 
     signal_simulations = []
 
-    # Use tqdm to create a progress bar
     with tqdm(total=num_pixles) as pbar:
         for i, index in enumerate(X.index):
             signal = X.loc[index]
@@ -105,17 +114,16 @@ def run_simulations(
 
             signal_simulations.append(signal_simulation)
 
-            # Update progress bar
             pbar.update(1)
 
             if (i + 1) % save_interval == 0:
                 completion_percentage = ((i + 1) / num_pixles) * 100
+                
                 save_signal_simulations(signal_simulations, simulations_path)
                 msg = f"Completed: {i+1} iterations; {completion_percentage:.2f}% of total iterations"
                 logger.info(msg)
                 send_telegram_notification(msg)
 
-        # Save signal simulations after all iterations are completed
         save_signal_simulations(signal_simulations, simulations_path)
 
     msg = "Iterations completed"
