@@ -5,9 +5,10 @@ from copy import deepcopy
 from pathlib import Path
 import reservoirpy as rpy
 from typing import Dict
-import logging
-from tqdm import tqdm  # Import tqdm
+from tqdm import tqdm
 
+from src.config import get_logger
+from src.notifications import send_telegram_notification
 from src import paths
 from src.models.fault_detection import simulate_signal
 from src.data.utils import create_output_paths
@@ -32,7 +33,7 @@ def run_simulations(
     simulations_path: Path = paths.data_interim_dir(
         "simulations", "simulations.pickle"),
 ):
-    logger = logging.getLogger(__name__)
+    logger = get_logger()
 
     logger.info("Starting signal simulations")
 
@@ -76,9 +77,10 @@ def run_simulations(
         esn = pickle.load(file)
 
     num_pixles = len(X.index)
-    logger.info(
-        f"Begining iteration of {num_pixles} pixels for signal simulation"
-    )
+
+    msg = f"Begining iteration of {num_pixles} pixels for signal simulation"
+    logger.info(msg)
+    send_telegram_notification(msg)
 
     signal_simulations = []
 
@@ -109,16 +111,13 @@ def run_simulations(
             if (i + 1) % save_interval == 0:
                 completion_percentage = ((i + 1) / num_pixles) * 100
                 save_signal_simulations(signal_simulations, simulations_path)
-                logger.info(
-                    f"Completed: {i+1} iterations; {completion_percentage:.2f}% of total iterations"
-                )
+                msg = f"Completed: {i+1} iterations; {completion_percentage:.2f}% of total iterations"
+                logger.info(msg)
+                send_telegram_notification(msg)
 
         # Save signal simulations after all iterations are completed
         save_signal_simulations(signal_simulations, simulations_path)
 
-    logger.info("Iterations completed")
-
-
-# Example usage
-if __name__ == "__main__":
-    run_simulations()
+    msg = "Iterations completed"
+    logger.info(msg)
+    send_telegram_notification(msg)
