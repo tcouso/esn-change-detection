@@ -117,3 +117,8 @@ def run_simulations(
         save_signal_simulations(signal_simulations, simulations_path)
 
     logger.info("Iterations completed")
+
+
+# Example usage
+if __name__ == "__main__":
+    run_simulations()
