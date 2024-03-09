@@ -5,12 +5,11 @@ from copy import deepcopy
 from pathlib import Path
 import reservoirpy as rpy
 from typing import Dict
+import logging
 
 from src import paths
 from src.models.fault_detection import simulate_signal
-from src.notifications import send_telegram_notification
 from src.data.utils import create_output_paths
-
 
 
 def save_signal_simulations(signal_simulations: Dict = None,
@@ -32,6 +31,7 @@ def run_simulations(
     simulations_path: Path = paths.data_interim_dir(
         "simulations", "simulations.pickle"),
 ):
+    logger = logging.getLogger(__name__)
 
     rpy.verbosity(0)
 
@@ -39,7 +39,7 @@ def run_simulations(
         params = yaml.safe_load(file)
 
     create_output_paths([simulations_path])
-    
+
     save_interval: int = params["save_interval"]
     weeks_after_change_offset: int = params["weeks_after_change_offset"]
     esn_features_dim: int = params["esn_features_dim"]
@@ -54,7 +54,7 @@ def run_simulations(
         pre_megadrought_fault_detection_dataset_path, index_col=["ID", "IDpix"])
     pre_megadrought_fault_detection_metadata_df = pd.read_csv(
         pre_megadrought_fault_detection_metadata_path, index_col=["ID", "IDpix"])
-    
+
     # Sample for plug test
     # index_sample = pre_megadrought_fault_detection_df.iloc[:20].index
 
@@ -73,7 +73,7 @@ def run_simulations(
         esn = pickle.load(file)
 
     num_pixles = len(X.index)
-    send_telegram_notification(
+    logger.info(
         f"Begining iteration of {num_pixles} pixels for signal simulation"
     )
 
@@ -103,9 +103,11 @@ def run_simulations(
         if (i + 1) % save_interval == 0:
             completion_percentage = ((i + 1) / num_pixles) * 100
             save_signal_simulations(signal_simulations, simulations_path)
-            send_telegram_notification(
+            logger.info(
                 f"Completed: {i+1} iterations; {completion_percentage:.2f}% of total iterations"
             )
 
     save_signal_simulations(signal_simulations, simulations_path)
-    send_telegram_notification("Iterations completed")
+    logger.info("Iterations completed")
+
+
