@@ -6,6 +6,7 @@ from pathlib import Path
 import reservoirpy as rpy
 from typing import Dict
 import logging
+from tqdm import tqdm  # Import tqdm
 
 from src import paths
 from src.models.fault_detection import simulate_signal
@@ -81,32 +82,38 @@ def run_simulations(
 
     signal_simulations = []
 
-    for i, index in enumerate(X.index):
+    # Use tqdm to create a progress bar
+    with tqdm(total=num_pixles) as pbar:
+        for i, index in enumerate(X.index):
+            signal = X.loc[index]
 
-        signal = X.loc[index]
+            if y.loc[index] == 0:
+                bounded_signal = signal
+            else:
+                event_date = change_start_dates.loc[index]
+                bounded_signal = signal[: event_date + date_offset]
 
-        if y.loc[index] == 0:
-            bounded_signal = signal
-        else:
-            event_date = change_start_dates.loc[index]
-            bounded_signal = signal[: event_date + date_offset]
-
-        signal_simulation = simulate_signal(
-            signal=bounded_signal,
-            model=deepcopy(esn),
-            num_features=esn_features_dim,
-            forecasted_steps=fault_detection_forecasted_steps,
-            step_size=step_size,
-        )
-
-        signal_simulations.append(signal_simulation)
-
-        if (i + 1) % save_interval == 0:
-            completion_percentage = ((i + 1) / num_pixles) * 100
-            save_signal_simulations(signal_simulations, simulations_path)
-            logger.info(
-                f"Completed: {i+1} iterations; {completion_percentage:.2f}% of total iterations"
+            signal_simulation = simulate_signal(
+                signal=bounded_signal,
+                model=deepcopy(esn),
+                num_features=esn_features_dim,
+                forecasted_steps=fault_detection_forecasted_steps,
+                step_size=step_size,
             )
 
-    save_signal_simulations(signal_simulations, simulations_path)
+            signal_simulations.append(signal_simulation)
+
+            # Update progress bar
+            pbar.update(1)
+
+            if (i + 1) % save_interval == 0:
+                completion_percentage = ((i + 1) / num_pixles) * 100
+                save_signal_simulations(signal_simulations, simulations_path)
+                logger.info(
+                    f"Completed: {i+1} iterations; {completion_percentage:.2f}% of total iterations"
+                )
+
+        # Save signal simulations after all iterations are completed
+        save_signal_simulations(signal_simulations, simulations_path)
+
     logger.info("Iterations completed")
