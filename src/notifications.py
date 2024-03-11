@@ -2,7 +2,6 @@ import requests
 import os
 from dotenv import find_dotenv, load_dotenv
 from src.config import get_logger
-import time
 
 load_dotenv(find_dotenv())
 
@@ -24,4 +23,4 @@ def send_telegram_notification(message):
 
     except requests.RequestException:
 
-        logger.info("Failed to send Telegram notification:")
+        logger.info("Failed to send Telegram notification")

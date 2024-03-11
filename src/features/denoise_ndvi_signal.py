@@ -56,7 +56,8 @@ def moving_std_filter(
 
     # Filter out of bounds values
     filtered_time_series = time_series[
-        (time_series < rolling_threshold_ub) & (time_series > rolling_threshold_lb)
+        (time_series < rolling_threshold_ub) & (
+            time_series > rolling_threshold_lb)
     ]
 
     # Interpolate missing values
@@ -91,7 +92,7 @@ def holt_winters_filter(time_series: Series, period: int = 52) -> Series:
     return hw_smoothed_time_series
 
 
-def denoise_ndvi_signal(time_series: Series, processors: List[Callable]) -> Series:
+def denoise_signal(time_series: Series, processors: List[Callable]) -> Series:
     """
     Description:
     Iterator pattern for denoising procedure.

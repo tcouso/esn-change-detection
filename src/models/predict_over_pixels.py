@@ -7,33 +7,35 @@ import pandas as pd
 import pickle
 
 from src.models.fault_detection import detect_fault
-from src.data.utils import create_output_paths
+from src.data.utils import create_output_path
 
 
 def predict_over_pixels(
+    simulations_dir: Path = paths.data_interim_dir("simulations"),
+    fault_detection_dir: Path = paths.data_processed_dir("fault_detection"),
     params_path: Path = paths.config_dir("params.yaml"),
-    simulations_path: Path = paths.data_interim_dir(
-        "simulations", "simulations.pickle"),
-    pre_megadrought_fault_detection_metadata_path: Path = paths.data_processed_dir(
-        "fault_detection", "pre_megadrought_fault_detection_metadata.csv"),
 ) -> None:
 
     with open(params_path, "r") as file:
         params = yaml.safe_load(file)
 
+    selected_band: str = params["selected_band"]
     N_values: List[int] = params["N_values"]
     k_values: List[float] = params["k_values"]
     step_size: int = params["step_size"]
     non_change_placeholder_date: str = params["non_change_placeholder_date"]
 
-    pre_megadrought_fault_detection_metadata_df = pd.read_csv(
-        pre_megadrought_fault_detection_metadata_path,
-        index_col=["ID", "IDpix"],
-    )
+    fault_detection_metadata_filename = "fault_detection_metadata_" + selected_band + ".csv"
+    fault_detection_metadata_path = fault_detection_dir / \
+        fault_detection_metadata_filename
+    fault_detection_metadata_df = pd.read_csv(
+        fault_detection_metadata_path, index_col=["ID", "IDpix"])
+
+    simulations_filename = "signal_simulations_" + selected_band + ".pickle"
+    simulations_path = simulations_dir / simulations_filename
 
     with open(simulations_path, "rb") as file:
         signal_simulations = pickle.load(file)
-
 
     for N, k in product(N_values, k_values):
 
@@ -56,17 +58,11 @@ def predict_over_pixels(
             simulation_results_dict["event_date"].append(date)
 
         y_pred = pd.DataFrame(simulation_results_dict)
-
-        assert y_pred.shape[0] == pre_megadrought_fault_detection_metadata_df.iloc[:20].shape[0]
-
-        # Sample for plug test
-        # y_pred.index = pre_megadrought_fault_detection_metadata_df.iloc[:20].index
-        
-        y_pred.index = pre_megadrought_fault_detection_metadata_df.index
+        y_pred.index = fault_detection_metadata_df.index
         y_pred["event_date"] = pd.to_datetime(y_pred["event_date"])
 
-        filename = f"predictions_N={N}_k={k}.csv"
+        filename = f"predictions_N={N}_k={k}_" + selected_band + ".csv"
         y_pred_path = paths.data_processed_dir("pixel_predictions", filename)
-        create_output_paths([y_pred_path])
+        create_output_path(y_pred_path)
 
         y_pred.to_csv(y_pred_path)

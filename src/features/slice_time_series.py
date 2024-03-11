@@ -33,7 +33,7 @@ def create_training_data(ts_data: np.ndarray, num_features: int) -> tuple[np.nda
     return X, y
 
 
-def create_multivariate_training_data(
+def create_training_data_for_multiple_pixels(
     ts_data: np.ndarray, num_features: int, train_size: int
 ) -> Tuple[np.ndarray]:
     """

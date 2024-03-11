@@ -41,7 +41,9 @@ for dir_type in [
     ["data", "external"],
     ["data", "examples"],
     ["models"],
-    ["models", "simulations"],
+    ["reports"],
+    ["reports", "figures"],
+    ["reports", "metrics"],
     ["notebooks"],
     ["references"],
 

@@ -7,10 +7,10 @@ from src.features.denoise_ndvi_signal import (
     downsample_time_series,
     moving_std_filter,
     holt_winters_filter,
-    denoise_ndvi_signal,
+    denoise_signal,
 )
 from src.features.slice_time_series import create_training_data
-from src.models.forecasting import Forecaster
+from src.models.forecaster import Forecaster
 
 
 def simulate_signal(
@@ -21,7 +21,7 @@ def simulate_signal(
     step_size: int = None,
 ) -> Dict:
 
-    denoised_signal_series = denoise_ndvi_signal(
+    denoised_signal_series = denoise_signal(
         signal, [
             downsample_time_series,
             moving_std_filter,
@@ -106,7 +106,7 @@ def detect_fault(
 
             flag = np.all(
                 forecast[j: j + N] < k * lower_bound[i + j: i + j + N]
-                )
+            )
 
             if flag:
                 return (float(flag), lower_bound_dates[i + j])
