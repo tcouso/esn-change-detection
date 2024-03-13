@@ -105,8 +105,9 @@ def esn_fault_detection_partition(
     esn_signal_path = esn_dir / esn_signal_filename
 
     fault_detection_metadata_filename = "fault_detection_metadata_" + selected_band + ".csv"
-    fault_detection_signal_filename = "fault_detection_signal_" + selected_band + ".csv"
     fault_detection_metadata_path = fault_detection_dir / fault_detection_metadata_filename
+
+    fault_detection_signal_filename = "fault_detection_signal_" + selected_band + ".csv"
     fault_detection_signal_path = fault_detection_dir / fault_detection_signal_filename
 
     out_paths = [

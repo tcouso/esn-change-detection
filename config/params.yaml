@@ -1,7 +1,7 @@
-selected_band: mndwi
+selected_band: ndvi
 
 test_at_scale: True
-test_at_scale_sample_size: 4
+test_at_scale_sample_size: 50
 
 directory_file_prefix_map:
   estable-arboreo-ts: ESTABLE
@@ -112,3 +112,5 @@ voting_thresholds:
   - 0.25
   - 0.50 
   - 0.75
+
+parameter_study_selected_vegetation: "native"

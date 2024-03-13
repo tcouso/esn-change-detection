@@ -26,7 +26,7 @@ def get_season_dates(year: int) -> tuple:
     )
 
 
-def plot_ndvi_signal(
+def plot_pixel_signal(
     *pol_list: pd.Series,
     labels: list = None,
     start_date: pd.Timestamp = pd.Timestamp("2000-01-03"),
