@@ -29,9 +29,14 @@ def scores_over_parameters(
         params = yaml.safe_load(file)
 
     selected_band: str = params["selected_band"]
-    parameter_study_selected_vegetation: str = params["parameter_study_selected_vegetation"]
+    # parameter_study_selected_vegetation: str = params["parameter_study_selected_vegetation"]
 
-    fault_detection_metadata_filename = "fault_detection_metadata_" + selected_band + ".csv"
+    fault_detection_metadata_filename = "_".join(
+        ["fault_detection_metadata",
+         selected_band ]
+         )
+    fault_detection_metadata_filename += ".csv"
+
     fault_detection_metadata_path = fault_detection_dir / \
         fault_detection_metadata_filename
     pixel_true_values_df = pd.read_csv(
@@ -58,7 +63,7 @@ def scores_over_parameters(
         (num_th_values, num_N_values, num_k_values))
 
     veg_type_mask = (
-        poly_true_values_df["vegetation_type"] == parameter_study_selected_vegetation)
+        poly_true_values_df["vegetation_type"] == "native")
 
     for triad_index, triad in enumerated_product(th_values, N_values, k_values):
         th, N, k = triad
@@ -81,10 +86,17 @@ def scores_over_parameters(
         f1_scores[th_index][N_index][k_index] = f1_score(
             sel_y_true, sel_y_pred)
 
-    acc_scores_filename = "acc_scores_" + selected_band + ".npy"
-    f1_scores_filename = "f1_scores_" + selected_band + ".npy"
-    precision_scores_filename = "precision_scores_" + selected_band + ".npy"
-    recall_scores_filename = "recall_scores_" + selected_band + ".npy"
+    acc_scores_filename = "_".join(["acc_scores", selected_band])
+    acc_scores_filename += ".npy"
+
+    f1_scores_filename = "_".join(["f1_scores", selected_band])
+    f1_scores_filename += ".npy"
+
+    precision_scores_filename = "_".join(["precision_scores", selected_band])
+    precision_scores_filename += ".npy"
+    
+    recall_scores_filename = "_".join(["recall_scores", selected_band])
+    recall_scores_filename += ".npy"
 
     acc_scores_path = metrics_dir / acc_scores_filename
     f1_scores_path = metrics_dir / f1_scores_filename

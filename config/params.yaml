@@ -113,4 +113,14 @@ voting_thresholds:
   - 0.50 
   - 0.75
 
-parameter_study_selected_vegetation: "native"
+# parameter_study_selected_vegetation: "native"
+
+parameter_study_max_metric_prefix: "f1_scores"
+
+stable_event_types:
+  - stable
+  - drought
+
+change_event_types:
+  - logging
+  - fire
