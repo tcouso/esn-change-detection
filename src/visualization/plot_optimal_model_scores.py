@@ -19,11 +19,11 @@ def plot_optimal_model_scores(
         params = yaml.safe_load(file)
 
     selected_band: str = params["selected_band"]
-    score_prefix: str = params["parameter_study_max_metric_prefix"]
+    selected_score: str = params["parameter_study_max_metric_prefix"]
 
     confusion_matrix_filename = "_".join(
         ["max",
-         score_prefix,
+         selected_score,
          "cm",
          selected_band])
     confusion_matrix_filename += ".npy"
@@ -36,7 +36,7 @@ def plot_optimal_model_scores(
 
     cm_display_filename = "_".join(
         ["max",
-         score_prefix,
+         selected_score,
          "cm",
          selected_band])
 
@@ -56,18 +56,18 @@ def plot_optimal_model_scores_by_event_type(
 
     selected_band: str = params["selected_band"]
     # parameter_study_selected_vegetation: str = params["parameter_study_selected_vegetation"]
-    score_prefix: str = params["parameter_study_max_metric_prefix"]
+    selected_score: str = params["parameter_study_max_metric_prefix"]
     stable_event_types: List[str] = params["stable_event_types"]
     change_event_types: List[str] = params["change_event_types"]
 
-    for stable_type, change_type in product(stable_event_types, change_event_types):
+    for non_change_type, change_type in product(stable_event_types, change_event_types):
 
         confusion_matrix_filename = "_".join([
             "max",
-            score_prefix,
+            selected_score,
             "cm",
             selected_band,
-            stable_type,
+            non_change_type,
             change_type
         ])
         confusion_matrix_filename += ".npy"
@@ -81,10 +81,10 @@ def plot_optimal_model_scores_by_event_type(
 
         cm_display_filename = "_".join([
             "max",
-            score_prefix,
+            selected_score,
             "cm",
             selected_band,
-            stable_type,
+            non_change_type,
             change_type
         ])
 

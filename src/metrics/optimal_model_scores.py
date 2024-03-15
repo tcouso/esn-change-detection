@@ -24,8 +24,7 @@ def optimal_model_scores(
     N_values: List[int] = params["N_values"]
     k_values: List[float] = params["k_values"]
     th_values: List[float] = params["voting_thresholds"]
-    # parameter_study_selected_vegetation: str = params["parameter_study_selected_vegetation"]
-    score_prefix: str = params["parameter_study_max_metric_prefix"]
+    selected_score: str = params["parameter_study_max_metric_prefix"]
 
     num_N_values = len(N_values)
     num_k_values = len(k_values)
@@ -46,7 +45,7 @@ def optimal_model_scores(
     veg_type_mask = (
         poly_true_values_df["vegetation_type"] == "native")
 
-    scores_filename = "_".join([score_prefix, selected_band])
+    scores_filename = "_".join([selected_score, selected_band])
     scores_filename += ".npy"
     scores_path = metrics_dir / scores_filename
 
@@ -60,7 +59,7 @@ def optimal_model_scores(
     N = N_values[max_score_N_index]
     k = k_values[max_score_k_index]
 
-    filename = f"predictions_N={N}_k={k}_th={th}.csv"
+    filename = f"predictions_N={N}_k={k}_th={th}_{selected_band}.csv"
     poly_pred_path = paths.data_processed_dir("poly_predictions", filename)
     poly_pred = pd.read_csv(poly_pred_path, index_col="ID")
 
@@ -79,21 +78,21 @@ def optimal_model_scores(
 
     detailed_cm_abosolutes_filename = "_".join(
         ["max",
-         score_prefix,
+         selected_score,
          "detailed_abs_cm", selected_band,
          ]
     )
-    detailed_cm_abosolutes_filename += ".npy"
+    detailed_cm_abosolutes_filename += ".csv"
     detailed_cm_abosolutes_path = metrics_dir / detailed_cm_abosolutes_filename
     detailed_cm_abosolutes.to_csv(detailed_cm_abosolutes_path)
 
     detailed_cm_percentages_filename = "_".join(
         ["max",
-         score_prefix,
-         "detailed_abs_cm", selected_band,
+         selected_score,
+         "detailed_per_cm", selected_band,
          ]
     )
-    detailed_cm_percentages_filename += ".npy"
+    detailed_cm_percentages_filename += ".csv"
     detailed_cm_percentages_path = metrics_dir / detailed_cm_percentages_filename
     detailed_cm_precentages.to_csv(detailed_cm_percentages_path)
 
@@ -102,7 +101,7 @@ def optimal_model_scores(
 
     confusion_matrix_filename = "_".join(
         ["max",
-         score_prefix,
+         selected_score,
          "cm",
          selected_band])
     confusion_matrix_filename += ".npy"
@@ -111,13 +110,13 @@ def optimal_model_scores(
 
     classification_report_filename = "_".join(
         ["max",
-         score_prefix,
+         selected_score,
          "classification_report",
          selected_band]
     )
     classification_report_filename += ".csv"
     classification_report_path = metrics_dir / classification_report_filename
-    report_df.to_csv(classification_report_path)
+    report_df.to_csv(classification_report_path, index=False)
 
 
 def optimal_model_scores_by_event_type(
@@ -133,7 +132,7 @@ def optimal_model_scores_by_event_type(
     k_values: List[float] = params["k_values"]
     th_values: List[float] = params["voting_thresholds"]
     # parameter_study_selected_vegetation: str = params["parameter_study_selected_vegetation"]
-    score_prefix: str = params["parameter_study_max_metric_prefix"]
+    selected_score: str = params["parameter_study_max_metric_prefix"]
     stable_event_types: List[str] = params["stable_event_types"]
     change_event_types: List[str] = params["change_event_types"]
 
@@ -155,7 +154,7 @@ def optimal_model_scores_by_event_type(
     veg_type_mask = (
         poly_true_values_df["vegetation_type"] == "native")
 
-    scores_filename = "_".join([score_prefix, selected_band])
+    scores_filename = "_".join([selected_score, selected_band])
     scores_filename += ".npy"
     scores_path = metrics_dir / scores_filename
 
@@ -169,13 +168,13 @@ def optimal_model_scores_by_event_type(
     N = N_values[max_score_N_index]
     k = k_values[max_score_k_index]
 
-    filename = f"predictions_N={N}_k={k}_th={th}.csv"
+    filename = f"predictions_N={N}_k={k}_th={th}_{selected_band}.csv"
     poly_pred_path = paths.data_processed_dir("poly_predictions", filename)
     poly_pred = pd.read_csv(poly_pred_path, index_col="ID")
 
-    for stable_type, change_type in product(stable_event_types, change_event_types):
+    for non_change_type, change_type in product(stable_event_types, change_event_types):
 
-        stable_type_mask = (poly_true_values_df["change_type"] == stable_type)
+        stable_type_mask = (poly_true_values_df["change_type"] == non_change_type)
         change_type_mask = (poly_true_values_df["change_type"] == change_type)
 
         mask = veg_type_mask & (change_type_mask | stable_type_mask)
@@ -190,10 +189,10 @@ def optimal_model_scores_by_event_type(
 
         confusion_matrix_filename = "_".join([
             "max",
-            score_prefix,
+            selected_score,
             "cm",
             selected_band,
-            stable_type,
+            non_change_type,
             change_type
         ])
         confusion_matrix_filename += ".npy"
@@ -202,12 +201,12 @@ def optimal_model_scores_by_event_type(
 
         classification_report_filename = "_".join([
             "max",
-            score_prefix,
+            selected_score,
             "classification_report",
             selected_band,
-            stable_type,
+            non_change_type,
             change_type
         ])
         classification_report_filename += ".csv"
         classification_report_path = metrics_dir / classification_report_filename
-        report_df.to_csv(classification_report_path)
+        report_df.to_csv(classification_report_path, index=False)

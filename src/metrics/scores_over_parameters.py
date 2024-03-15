@@ -69,7 +69,7 @@ def scores_over_parameters(
         th, N, k = triad
         th_index, N_index, k_index = triad_index
 
-        filename = f"predictions_N={N}_k={k}_th={th}.csv"
+        filename = f"predictions_N={N}_k={k}_th={th}_{selected_band}.csv"
 
         poly_pred_path = paths.data_processed_dir("poly_predictions", filename)
         poly_pred = pd.read_csv(poly_pred_path, index_col="ID")

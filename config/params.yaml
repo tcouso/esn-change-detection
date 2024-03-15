@@ -1,4 +1,4 @@
-selected_band: ndvi
+selected_band: nbr
 
 test_at_scale: True
 test_at_scale_sample_size: 50
@@ -113,7 +113,6 @@ voting_thresholds:
   - 0.50 
   - 0.75
 
-# parameter_study_selected_vegetation: "native"
 
 parameter_study_max_metric_prefix: "f1_scores"
 
