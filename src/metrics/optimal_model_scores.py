@@ -116,7 +116,7 @@ def optimal_model_scores(
     )
     classification_report_filename += ".csv"
     classification_report_path = metrics_dir / classification_report_filename
-    report_df.to_csv(classification_report_path, index=False)
+    report_df.to_csv(classification_report_path, index=True)
 
 
 def optimal_model_scores_by_event_type(
@@ -209,4 +209,4 @@ def optimal_model_scores_by_event_type(
         ])
         classification_report_filename += ".csv"
         classification_report_path = metrics_dir / classification_report_filename
-        report_df.to_csv(classification_report_path, index=False)
+        report_df.to_csv(classification_report_path, index=True)
