@@ -86,6 +86,9 @@ def esn_fault_detection_partition(
     change_metadata_df.loc[:, "change_start"] = pd.to_datetime(change_metadata_df["change_start"], dayfirst=True)
     selected_change_polygons_indices = change_metadata_df.loc[change_metadata_df["change_start"] > event_threshold].index
     change_metadata_df = change_metadata_df.loc[selected_change_polygons_indices]
+
+    change_metadata_df.loc[:, "last_non_change_date"] = pd.to_datetime(change_metadata_df["last_non_change_date"], dayfirst=True)
+
     change_metadata_df["label"] = 1
 
     change_signal_df = change_signal_df.loc[selected_change_polygons_indices]

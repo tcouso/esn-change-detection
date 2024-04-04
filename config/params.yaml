@@ -1,6 +1,6 @@
-selected_band: nbr
+selected_band: ndvi
 
-test_at_scale: True
+test_at_scale: False
 test_at_scale_sample_size: 50
 
 directory_file_prefix_map:

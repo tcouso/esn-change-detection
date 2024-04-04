@@ -72,7 +72,7 @@ def plot_scores_over_parameters(
             df.columns = k_values
             df.index = N_values
 
-            sns.heatmap(df, annot=True, cmap="YlGnBu", cbar_kws={
+            sns.heatmap(df, annot=False, cmap="YlGnBu", cbar_kws={
                         'label': 'F1-score'}, vmin=overall_min, vmax=overall_max)
 
             plt.title(f"Threshold={th}")

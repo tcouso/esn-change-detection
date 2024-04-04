@@ -16,7 +16,7 @@ def optimal_model_scores(
     params_path: Path = paths.config_dir("params.yaml"),
     metrics_dir: Path = paths.reports_dir("metrics"),
     fault_detection_dir: Path = paths.data_processed_dir("fault_detection"),
-):
+) -> None:
     with open(params_path, "r") as file:
         params = yaml.safe_load(file)
 
@@ -116,6 +116,7 @@ def optimal_model_scores(
     )
     classification_report_filename += ".csv"
     classification_report_path = metrics_dir / classification_report_filename
+
     report_df.to_csv(classification_report_path, index=True)
 
 
@@ -123,7 +124,7 @@ def optimal_model_scores_by_event_type(
     params_path: Path = paths.config_dir("params.yaml"),
     metrics_dir: Path = paths.reports_dir("metrics"),
     fault_detection_dir: Path = paths.data_processed_dir("fault_detection"),
-):
+) -> None:
     with open(params_path, "r") as file:
         params = yaml.safe_load(file)
 
@@ -131,7 +132,7 @@ def optimal_model_scores_by_event_type(
     N_values: List[int] = params["N_values"]
     k_values: List[float] = params["k_values"]
     th_values: List[float] = params["voting_thresholds"]
-    # parameter_study_selected_vegetation: str = params["parameter_study_selected_vegetation"]
+
     selected_score: str = params["parameter_study_max_metric_prefix"]
     stable_event_types: List[str] = params["stable_event_types"]
     change_event_types: List[str] = params["change_event_types"]
@@ -174,7 +175,8 @@ def optimal_model_scores_by_event_type(
 
     for non_change_type, change_type in product(stable_event_types, change_event_types):
 
-        stable_type_mask = (poly_true_values_df["change_type"] == non_change_type)
+        stable_type_mask = (
+            poly_true_values_df["change_type"] == non_change_type)
         change_type_mask = (poly_true_values_df["change_type"] == change_type)
 
         mask = veg_type_mask & (change_type_mask | stable_type_mask)
