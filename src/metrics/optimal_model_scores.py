@@ -66,6 +66,8 @@ def optimal_model_scores(
     y_true = poly_true_values_df.loc[veg_type_mask]["label"]
     y_pred = poly_pred.loc[veg_type_mask]["prediction"]
 
+    # Confusion matrix
+
     cm = confusion_matrix(y_true, y_pred)
 
     detailed_cm = poly_true_values_df.copy()
@@ -96,8 +98,16 @@ def optimal_model_scores(
     detailed_cm_percentages_path = metrics_dir / detailed_cm_percentages_filename
     detailed_cm_precentages.to_csv(detailed_cm_percentages_path)
 
+    # Classification report
+
     report_dict = classification_report(y_true, y_pred, output_dict=True)
     report_df = pd.DataFrame(report_dict).transpose()
+
+    # Detection dates metrics
+
+    # TODO
+
+    # Saving
 
     confusion_matrix_filename = "_".join(
         ["max",

@@ -29,9 +29,12 @@ def predict_over_polygons(
 
         poly_pred = pix_pred.groupby("ID")["prediction"].mean().apply(
             lambda x: 1.0 if x >= th else 0.0)
+        poly_pred_detection_dates = pix_pred.groupby("ID")["event_date"].max()
+
+        poly_pred_df = pd.DataFrame({"prediction": poly_pred, "event_date": poly_pred_detection_dates})
 
         filename = f"predictions_N={N}_k={k}_th={th}_" + selected_band + ".csv"
         poly_pred_path = paths.data_processed_dir("poly_predictions", filename)
         create_output_path(poly_pred_path)
 
-        poly_pred.to_csv(poly_pred_path)
+        poly_pred_df.to_csv(poly_pred_path)

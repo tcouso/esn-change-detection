@@ -9,10 +9,10 @@ def main():
     try:
         logger = get_logger()
 
-        # message = "Starting signal simulations"
-        # logger.info(message)
-        # send_telegram_notification(message)
-        # run_simulations()
+        message = "Starting signal simulations"
+        logger.info(message)
+        send_telegram_notification(message)
+        run_simulations()
 
         message = "Starting pixel predictions"
         logger.info(message)
