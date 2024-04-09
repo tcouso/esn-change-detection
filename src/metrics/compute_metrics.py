@@ -7,8 +7,8 @@ from src.metrics.optimal_model_scores import (optimal_model_scores,
 def main():
     logger = get_logger()
 
-    logger.info("Computing scores over all parameters")
-    scores_over_parameters()
+    # logger.info("Computing scores over all parameters")
+    # scores_over_parameters()
 
     logger.info("Computing scores over optimal parameters")
     optimal_model_scores()
