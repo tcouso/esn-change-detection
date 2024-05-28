@@ -82,7 +82,7 @@ def plot_pixel_signal(
     ax.legend()
 
     ax.set_xlabel("Date")
-    ax.set_ylabel("Mean NDVI")
+    ax.set_ylabel("NDVI")
 
     plt.xticks(rotation=45)
     plt.show()

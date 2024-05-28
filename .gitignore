@@ -81,6 +81,9 @@ target/
 # exclude reports plots
 /reports/
 
+# exclue references
+/references/
+
 # Mac OS-specific storage files
 .DS_Store
 

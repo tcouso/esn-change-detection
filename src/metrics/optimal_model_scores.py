@@ -120,14 +120,14 @@ def optimal_model_scores(
 
     # Detection dates metrics
 
-    true_positives_indices = poly_true_values_df[
-        (poly_true_values_df["label"] == poly_pred["prediction"]) &
-        (poly_true_values_df["label"] == 1)
-    ].index
+    true_positives_indices = y_true[
+            (y_true == y_pred) &
+            (y_true == 1)
+        ].index
 
-    false_positives_indices = poly_true_values_df[
-        (poly_true_values_df["label"] != poly_pred["prediction"]) &
-        (poly_true_values_df["label"] == 0)
+    false_positives_indices = y_true[
+        (y_true != y_pred) &
+        (y_true == 0)
     ].index
 
     time_deltas_non_change_to_detection = (
@@ -135,8 +135,8 @@ def optimal_model_scores(
         poly_true_values_df.loc[true_positives_indices]["last_non_change_date"]
     )
     time_deltas_detenction_to_change_start = (
-        poly_true_values_df.loc[true_positives_indices]["change_start"] -
-        poly_pred.loc[true_positives_indices]["event_date"]
+        poly_pred.loc[true_positives_indices]["event_date"] - 
+        poly_true_values_df.loc[true_positives_indices]["change_start"]
     )
 
     false_positives_detection_dates_description = poly_pred.loc[false_positives_indices]["event_date"].describe(
@@ -327,8 +327,6 @@ def optimal_model_scores_by_event_type(
 
         # Detection dates metrics
 
-        # TODO
-
         true_positives_indices = y_true[
             (y_true == y_pred) &
             (y_true == 1)
@@ -344,8 +342,8 @@ def optimal_model_scores_by_event_type(
             poly_true_values_df.loc[true_positives_indices]["last_non_change_date"]
         )
         time_deltas_detenction_to_change_start = (
-            poly_true_values_df.loc[true_positives_indices]["change_start"] -
-            poly_pred.loc[true_positives_indices]["event_date"]
+            poly_pred.loc[true_positives_indices]["event_date"] -
+            poly_true_values_df.loc[true_positives_indices]["change_start"]
         )
 
         false_positives_detection_dates_description = poly_pred.loc[false_positives_indices]["event_date"].describe(

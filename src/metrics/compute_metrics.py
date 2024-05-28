@@ -13,7 +13,7 @@ def main():
     logger.info("Computing scores over optimal parameters")
     optimal_model_scores()
 
-    logger.info("Computing scores by eventy type")
+    logger.info("Computing scores by event type")
     optimal_model_scores_by_event_type()
 
     logger.info("Done")
