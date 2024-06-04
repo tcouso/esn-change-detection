@@ -1,4 +1,5 @@
 selected_band: ndvi
+selected_vegetation: native
 
 test_at_scale: False
 test_at_scale_sample_size: 50
@@ -66,6 +67,8 @@ event_threshold: 01-01-2010
 megadrought_threshold: 01-01-2020
 
 non_change_placeholder_date: 01-01-1800
+
+training_limit_date: 01-01-2016
 
 random_seed: 0
 
