@@ -3,7 +3,7 @@ import numpy as np
 import reservoirpy as rpy
 from typing import Dict, Tuple
 
-from src.features.denoise_ndvi_signal import (
+from src.features.denoise_signal import (
     downsample_time_series,
     moving_std_filter,
     holt_winters_filter,

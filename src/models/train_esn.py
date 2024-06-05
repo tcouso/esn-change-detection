@@ -13,16 +13,13 @@ from sklearn.metrics import (
 )
 
 from src import paths
-from src.data.utils import create_output_path
+# from src.data.utils import create_output_path
 from src.features.slice_time_series import create_training_data_for_multiple_pixels
 
 
-def train_esn(
-    denoised_esn_signal_dir: Path = paths.data_processed_dir("esn"),
-    trained_esn_dir: Path = paths.models_dir(),
-    metrics_dir: Path = paths.reports_metrics_dir(),
-    params_path: Path = paths.config_dir("params.yaml"),
-) -> None:
+def train_esn() -> None:
+    
+    params_path: Path = paths.config_dir("params.yaml")
 
     rpy.verbosity(0)
 
@@ -37,11 +34,14 @@ def train_esn(
     esn_lr: float = params["esn_lr"]
     esn_sr: float = params["esn_sr"]
 
-    denoised_esn_signal_filename = "esn_signal_denoised_" + selected_band + ".csv"
-    denoised_signal_path = denoised_esn_signal_dir / denoised_esn_signal_filename
+    # denoised_esn_signal_filename = "esn_signal_denoised_" + selected_band + ".csv"
+    denoised_esn_signal_filename = "_".join(
+        ["denoised_train_signal_filtered_dataset", selected_band])
+    denoised_esn_signal_filename += ".csv"
+    # denoised_signal_path = denoised_esn_signal_dir / denoised_esn_signal_filename
 
-    denoised_esn_signal_df = pd.read_csv(
-        denoised_signal_path, index_col=["ID", "IDpix"])
+    denoised_esn_signal_df = pd.read_csv(paths.features_dir(
+        denoised_esn_signal_filename), index_col=["ID", "IDpix"])
     denoised_esn_signal_df.columns = pd.to_datetime(
         denoised_esn_signal_df.columns)
 
@@ -78,16 +78,21 @@ def train_esn(
         "r2": r2,
     }
 
-    model_filename = "trained_esn_" + selected_band + ".pickle"
-    model_path = trained_esn_dir / model_filename
-    create_output_path(model_path)
+    # model_filename = "trained_esn_" + selected_band + ".pickle"
+    model_filename = "_".join(["trained_esn", selected_band])
+    model_filename += ".pickle"
+    # model_path = trained_esn_dir / model_filename
+    # create_output_path(model_path)
 
-    with open(model_path, 'wb') as file:
+    with open(paths.models_dir(model_filename), 'wb') as file:
         pickle.dump(esn_model, file)
 
-    metrics_filename = "esn_regression_metrics_" + selected_band + ".json"
-    metrics_path = metrics_dir / metrics_filename
-    create_output_path(metrics_path)
+    # metrics_filename = "esn_regression_metrics_" + selected_band + ".json"
+    metrics_filename = "_".join(["esn_regression_metrics", selected_band ])
+    metrics_filename += ".json"
 
-    with open(metrics_path, "w") as outfile:
+    # metrics_path = metrics_dir / metrics_filename
+    # create_output_path(metrics_path)
+
+    with open(paths.reports_metrics_dir(metrics_filename), "w") as outfile:
         json.dump(metrics, outfile)

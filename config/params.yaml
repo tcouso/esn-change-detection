@@ -1,7 +1,7 @@
 selected_band: ndvi
 selected_vegetation: native
 
-test_at_scale: False
+test_at_scale: True
 test_at_scale_sample_size: 50
 
 directory_file_prefix_map:
@@ -82,7 +82,7 @@ esn_features_dim: 104
 
 esn_training_years: 10
 
-esn_num_units: 500
+esn_num_units: 500 # TODO: Increase num of units
 
 esn_lr: 0.5
 
