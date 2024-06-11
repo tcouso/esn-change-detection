@@ -4,7 +4,7 @@ import reservoirpy as rpy
 from typing import Dict, Tuple
 
 from src.features.denoise_signal import (
-    downsample_time_series,
+    resample_time_series,
     moving_std_filter,
     holt_winters_filter,
     denoise_signal,
@@ -23,7 +23,7 @@ def simulate_signal(
 
     denoised_signal_series = denoise_signal(
         signal, [
-            downsample_time_series,
+            resample_time_series,
             moving_std_filter,
             holt_winters_filter,
         ]
@@ -85,7 +85,7 @@ def simulate_signal(
     }
 
 
-def detect_fault(
+def detect_change(
     N: int = None,
     k: float = None,
     step_size: int = None,

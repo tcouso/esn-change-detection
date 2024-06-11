@@ -2,13 +2,13 @@ import pandas as pd
 from pathlib import Path
 import yaml
 
-from src.features.denoise_signal import denoise_signal, downsample_time_series, moving_std_filter, holt_winters_filter
+from src.features.denoise_signal import denoise_signal, resample_time_series, moving_std_filter, holt_winters_filter
 from src import paths
 # from src.data.utils import create_output_path
 
 
 def run_signal_denoising() -> None:
-    
+
     # esn_dir: Path = paths.data_interim_dir("esn")
     # denoised_esn_dir: Path = paths.data_processed_dir("esn")
     params_path: Path = paths.config_dir("params.yaml")
@@ -19,14 +19,16 @@ def run_signal_denoising() -> None:
     selected_band: str = params["selected_band"]
 
     # esn_metadata_filename = "esn_metadata_" + selected_band + ".csv"
-    train_signal_filename = "_".join(["train_signal_filtered_dataset", selected_band])
+    train_signal_filename = "_".join(
+        ["train_signal_filtered_dataset", selected_band])
     train_signal_filename += ".csv"
 
     # esn_metadata_path = esn_dir / esn_metadata_filename
     # esn_signal_path = esn_dir / esn_signal_filename
 
     # metadata_df = pd.read_csv(paths.data_processed_dir("metadata_filtered_dataset_ndvi.csv"), index_col=["ID", "IDpix"])
-    signal_df = pd.read_csv(paths.data_processed_dir(train_signal_filename), index_col=["ID", "IDpix"])
+    signal_df = pd.read_csv(paths.data_processed_dir(
+        train_signal_filename), index_col=["ID", "IDpix"])
     signal_df.columns = pd.to_datetime(signal_df.columns)
 
     denoised_train_signal = []
@@ -37,9 +39,9 @@ def run_signal_denoising() -> None:
     for pix_index in range(num_pixels):
         # Denoise polygon
         denoised_ts = denoise_signal(
-            signal_df.iloc[pix_index], [downsample_time_series,
-                                             moving_std_filter,
-                                             holt_winters_filter]
+            signal_df.iloc[pix_index], [resample_time_series,
+                                        moving_std_filter,
+                                        holt_winters_filter]
         )
         denoised_train_signal.append(denoised_ts)
 
@@ -74,5 +76,7 @@ def run_signal_denoising() -> None:
     #     create_output_path(out_path)
 
     # metadata_df.to_csv(denoised_metadata_path)
-    denoised_train_signal_filename = "_".join(["denoised", train_signal_filename])
-    denoised_train_signal_df.to_csv(paths.features_dir(denoised_train_signal_filename))
+    denoised_train_signal_filename = "_".join(
+        ["denoised", train_signal_filename])
+    denoised_train_signal_df.to_csv(
+        paths.features_dir(denoised_train_signal_filename))

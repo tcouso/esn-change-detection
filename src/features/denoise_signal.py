@@ -4,7 +4,7 @@ from statsmodels.tsa.holtwinters import ExponentialSmoothing
 from typing import List, Callable
 
 
-def downsample_time_series(time_series: Series) -> Series:
+def resample_time_series(time_series: Series) -> Series:
     """
     Description:
     This function takes a pandas Series `time_series` as input and
@@ -16,7 +16,7 @@ def downsample_time_series(time_series: Series) -> Series:
     Returns:
     - Series: The resampled time series.
     """
-    # Downsample by week
+    # Resample by week
     resampled_time_series = time_series.resample("W").median()
 
     # Fill missing values by interpolation

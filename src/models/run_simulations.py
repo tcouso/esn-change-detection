@@ -1,3 +1,5 @@
+# TODO: Implement process pool for simmulations
+
 import pickle
 import yaml
 import pandas as pd
@@ -10,7 +12,7 @@ from tqdm import tqdm
 from src.config import get_logger
 from src.notifications import send_telegram_notification
 from src import paths
-from src.models.fault_detection import simulate_signal
+from src.models.change_detection import simulate_signal
 from src.data.utils import create_output_path
 
 

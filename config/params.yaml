@@ -20,11 +20,12 @@ column_conventions:
   latitude: lat
   longitude: lon
   NAME: change_type
-  Finicio: change_start
+  Ffinal: change_ending_date
+  Finicio: change_start_date
   Fultima: last_non_change_date
   ORIGdesde: vegetation_type
-  ID: pol_id
-  IDpix: pix_id
+  # ID: pol_id
+  # IDpix: pix_id
 
 vegetation_type_conventions:
   NATIVO: native
@@ -49,17 +50,17 @@ excluded_cols:
   - Fsequia
   - AREA_HA
   - PERIM_M
-  - Ffinal
   - nPIXxPOL
 
-esn_training_percentage: 0.3
+# esn_training_percentage: 0.3
 
 metadata_columns:
   - lat
   - lon
   - change_type
   - last_non_change_date
-  - change_start
+  - change_start_date
+  - change_ending_date
   - vegetation_type
 
 event_threshold: 01-01-2010
@@ -68,7 +69,7 @@ megadrought_threshold: 01-01-2020
 
 non_change_placeholder_date: 01-01-1800
 
-training_limit_date: 01-01-2016
+training_limit_date: 01-01-2014
 
 validation_limit_date: 01-01-2010
 

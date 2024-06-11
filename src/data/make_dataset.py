@@ -18,8 +18,8 @@ def main() -> None:
         logger.info(message)
         send_telegram_notification(message)
 
-        logger.info("Joining aux and signal files")
-        join_signal_to_aux_datasets()
+        # logger.info("Joining aux and signal files")
+        # join_signal_to_aux_datasets()
 
         logger.info("Joining events datasets")
         join_events_datasets()

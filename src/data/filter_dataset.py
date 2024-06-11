@@ -18,9 +18,7 @@ def filter_dataset() -> None:
         dataset_filename), index_col=["ID", "IDpix"])
 
     # Apply filters
-    selected_vegetation = params["selected_vegetation"]
-
-    df = df.loc[df["vegetation_type"] == selected_vegetation, :]
+    df = df.loc[df["vegetation_type"] == params["selected_vegetation"], :]
 
     # Save files
     filtered_dataset_filename = "_".join(["filtered", dataset_filename])

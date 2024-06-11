@@ -26,27 +26,28 @@ class Forecaster:
         self.num_features = num_features
         self.model = esn
 
-    def fit(self, X: np.ndarray, y: np.ndarray, warmup: int = 0) -> None:
-        """
-        Fit the model to the data using an offline learning rule.
+    # def fit(self, X: np.ndarray, y: np.ndarray, warmup: int = 0) -> None:
+    #     """
+    #     Fit the model to the data using an offline learning rule.
 
-        Args:
-            X (np.ndarray): The input data.
-            y (np.ndarray): The target data.
-            warmup (int, optional): Number of warmup samples. Default is 0.
-        """
-        self.model = self.model.fit(X, y, warmup=warmup)
+    #     Args:
+    #         X (np.ndarray): The input data.
+    #         y (np.ndarray): The target data.
+    #         warmup (int, optional): Number of warmup samples. Default is 0.
+    #     """
+    #     self.model = self.model.fit(X, y, warmup=warmup)
 
-    def train(self, X: np.ndarray, y: np.ndarray) -> None:
-        """
-        Train the model on the data using an online learning rule.
+    # def train(self, X: np.ndarray, y: np.ndarray) -> None:
+    #     """
+    #     Train the model on the data using an online learning rule.
 
-        Args:
-            X (np.ndarray): The input data.
-            y (np.ndarray): The target data.
-        """
-        self.model.train(X, y)
+    #     Args:
+    #         X (np.ndarray): The input data.
+    #         y (np.ndarray): The target data.
+    #     """
+    #     self.model.train(X, y)
 
+    # TODO: Convert to model
     def forecast(self, prediction_length: int, warmup_X: np.ndarray) -> np.ndarray:
         """
         Generate a prediction sequence of specific length using the ESN model.

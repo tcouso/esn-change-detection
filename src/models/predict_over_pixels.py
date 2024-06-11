@@ -6,7 +6,7 @@ from typing import List
 import pandas as pd
 import pickle
 
-from src.models.fault_detection import detect_fault
+from src.models.change_detection import detect_change
 from src.data.utils import create_output_path
 
 
@@ -52,7 +52,7 @@ def predict_over_pixels(
             fault_detection_params["step_size"] = step_size
             fault_detection_params["non_change_placeholder_date"] = non_change_placeholder_date
 
-            pred, date = detect_fault(**fault_detection_params)
+            pred, date = detect_change(**fault_detection_params)
 
             simulation_results_dict["prediction"].append(pred)
             simulation_results_dict["event_date"].append(date)
