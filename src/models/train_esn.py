@@ -1,4 +1,4 @@
-import pandas as pd
+import numpy as np
 from pathlib import Path
 import reservoirpy as rpy
 from reservoirpy.nodes import Reservoir, RLS
@@ -11,14 +11,11 @@ from sklearn.metrics import (
     mean_squared_error,
     r2_score
 )
-
 from src import paths
-# from src.data.utils import create_output_path
-from src.features.slice_time_series import create_training_data_for_multiple_pixels
 
 
 def train_esn() -> None:
-    
+
     params_path: Path = paths.config_dir("params.yaml")
 
     rpy.verbosity(0)
@@ -26,35 +23,19 @@ def train_esn() -> None:
     with open(params_path, "r") as file:
         params = yaml.safe_load(file)
 
-    selected_band: str = params["selected_band"]
-    esn_features_dim: int = params["esn_features_dim"]
-    esn_training_years: int = params["esn_training_years"]
-    weeks_per_year: int = params["weeks_per_year"]
+    selected_band = params["selected_band"]
     esn_num_units: int = params["esn_num_units"]
     esn_lr: float = params["esn_lr"]
     esn_sr: float = params["esn_sr"]
 
-    # denoised_esn_signal_filename = "esn_signal_denoised_" + selected_band + ".csv"
-    denoised_esn_signal_filename = "_".join(
-        ["denoised_train_signal_filtered_dataset", selected_band])
-    denoised_esn_signal_filename += ".csv"
-    # denoised_signal_path = denoised_esn_signal_dir / denoised_esn_signal_filename
+    # Load data
+    Xtrain = np.load(paths.features_dir("Xtrain.npy"))
+    ytrain = np.load(paths.features_dir("ytrain.npy"))
 
-    denoised_esn_signal_df = pd.read_csv(paths.features_dir(
-        denoised_esn_signal_filename), index_col=["ID", "IDpix"])
-    denoised_esn_signal_df.columns = pd.to_datetime(
-        denoised_esn_signal_df.columns)
+    Xval = np.load(paths.features_dir("Xval.npy"))
+    yval = np.load(paths.features_dir("yval.npy"))
 
-    denoised_ts = denoised_esn_signal_df.to_numpy()
-
-    train_size = weeks_per_year * esn_training_years
-
-    Xtrain, ytrain, Xval, yval = create_training_data_for_multiple_pixels(
-        denoised_ts, num_features=esn_features_dim, train_size=train_size)
-
-    ytrain = ytrain.reshape(-1, 1)
-    yval = yval.reshape(-1, 1)
-
+    # Instance model
     reservoir = Reservoir(
         units=esn_num_units,
         lr=esn_lr,
@@ -63,9 +44,11 @@ def train_esn() -> None:
     readout = RLS()
     esn_model = reservoir >> readout
 
+    # Train model
     esn_model.train(Xtrain, ytrain)
     ypred = esn_model.run(Xval)
 
+    # Compute metrics
     mape = mean_absolute_percentage_error(yval, ypred)
     mae = mean_absolute_error(yval, ypred)
     mse = mean_squared_error(yval, ypred)
@@ -78,21 +61,15 @@ def train_esn() -> None:
         "r2": r2,
     }
 
-    # model_filename = "trained_esn_" + selected_band + ".pickle"
+    # Save files
     model_filename = "_".join(["trained_esn", selected_band])
     model_filename += ".pickle"
-    # model_path = trained_esn_dir / model_filename
-    # create_output_path(model_path)
 
     with open(paths.models_dir(model_filename), 'wb') as file:
         pickle.dump(esn_model, file)
 
-    # metrics_filename = "esn_regression_metrics_" + selected_band + ".json"
-    metrics_filename = "_".join(["esn_regression_metrics", selected_band ])
+    metrics_filename = "_".join(["esn_regression_metrics", selected_band])
     metrics_filename += ".json"
-
-    # metrics_path = metrics_dir / metrics_filename
-    # create_output_path(metrics_path)
 
     with open(paths.reports_metrics_dir(metrics_filename), "w") as outfile:
         json.dump(metrics, outfile)

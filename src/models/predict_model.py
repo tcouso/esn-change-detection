@@ -6,8 +6,12 @@ from src.notifications import send_telegram_notification
 
 
 def main():
+    logger = get_logger()
+
     try:
-        logger = get_logger()
+        message = "Starting model prediction"
+        logger.info(message)
+        send_telegram_notification(message)
 
         message = "Starting signal simulations"
         logger.info(message)
@@ -24,7 +28,7 @@ def main():
         send_telegram_notification(message)
         predict_over_polygons()
 
-        message = "Done"
+        message = "Model prediction done"
         logger.info(message)
         send_telegram_notification(message)
 

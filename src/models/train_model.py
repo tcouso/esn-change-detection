@@ -7,14 +7,13 @@ def main():
     logger = get_logger()
 
     try:
-        message = "Starting ESN training"
+        message = "Starting model training"
         logger.info(message)
         send_telegram_notification(message)
 
-        logger.info("Training ESN")
         train_esn()
 
-        message = "ESN training completed successfully"
+        message = "Model training done"
         logger.info(message)
         send_telegram_notification(message)
 

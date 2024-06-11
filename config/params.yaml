@@ -70,6 +70,8 @@ non_change_placeholder_date: 01-01-1800
 
 training_limit_date: 01-01-2016
 
+validation_limit_date: 01-01-2010
+
 random_seed: 0
 
 save_interval: 100
@@ -82,7 +84,7 @@ esn_features_dim: 104
 
 esn_training_years: 10
 
-esn_num_units: 500 # TODO: Increase num of units
+esn_num_units: 500
 
 esn_lr: 0.5
 

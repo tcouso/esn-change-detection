@@ -33,7 +33,7 @@ def main() -> None:
         logger.info("Creating training and testing datasets")
         make_train_and_test_datasets()
 
-        message = "Data processing completed successfully"
+        message = "Data processing done"
         logger.info(message)
         send_telegram_notification(message)
 
