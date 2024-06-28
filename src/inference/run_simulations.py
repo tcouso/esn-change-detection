@@ -19,7 +19,7 @@ def run_simulations() -> None:
     signal_df.columns = pd.to_datetime(signal_df.columns)
 
     results = parallel_simulate_pixels(
-        model_path=paths.models_dir("trained_esn_ndvi.pickle"),
+        model_path=paths.models_dir("trained_esn_ndvi.pk"),
         signal_df=signal_df,
         num_features=esn_features_dim,
         forecasted_steps=change_detection_forecasted_steps,

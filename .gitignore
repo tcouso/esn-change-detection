@@ -85,7 +85,8 @@ target/
 /references/
 
 # exclude raw models and results files
-.pk
+*.pk
+*.pickle
 
 # Mac OS-specific storage files
 .DS_Store

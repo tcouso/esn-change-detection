@@ -61,7 +61,7 @@ def train_esn() -> None:
 
     # Save files
     model_filename = "_".join(["trained_esn", selected_band])
-    model_filename += ".pickle"
+    model_filename += ".pk"
 
     with open(paths.models_dir(model_filename), 'wb') as file:
         pickle.dump(esn_model, file)

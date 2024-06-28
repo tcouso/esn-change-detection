@@ -21,7 +21,7 @@ import pandas as pd
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import copy
 import pickle
-import tqdm
+from tqdm import tqdm
 
 from src.inference.forecaster import Forecaster
 from src.features.slice_time_series import create_training_data
