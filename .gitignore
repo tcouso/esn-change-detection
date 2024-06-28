@@ -84,6 +84,9 @@ target/
 # exclue references
 /references/
 
+# exclude raw models and results files
+.pk
+
 # Mac OS-specific storage files
 .DS_Store
 
