@@ -6,11 +6,9 @@ from typing import List, Dict
 from src.data.utils import create_output_path
 
 
-def join_signal_to_aux_datasets(
-    params_path: Path = paths.config_dir("params.yaml"),
-) -> None:
+def join_signal_to_aux_datasets() -> None:
 
-    with open(params_path, "r") as file:
+    with open(paths.config_dir("params.yaml"), "r") as file:
         params = yaml.safe_load(file)
 
     selected_band: str = params["selected_band"]

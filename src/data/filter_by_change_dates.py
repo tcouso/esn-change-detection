@@ -10,7 +10,7 @@ def make_train_and_test_datasets() -> None:
         params = yaml.safe_load(file)
 
     selected_band = params["selected_band"]
-    training_limit_date = params["training_limit_date"]
+    # training_limit_date = params["training_limit_date"]
 
     test_signal_filename = "_".join(
         ["train", "signal", "filtered", "dataset", selected_band])

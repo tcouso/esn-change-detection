@@ -2,7 +2,7 @@ selected_band: ndvi
 selected_vegetation: native
 
 test_at_scale: True
-test_at_scale_sample_size: 50
+test_at_scale_sample_size: 3
 
 directory_file_prefix_map:
   estable-arboreo-ts: ESTABLE
@@ -24,8 +24,6 @@ column_conventions:
   Finicio: change_start_date
   Fultima: last_non_change_date
   ORIGdesde: vegetation_type
-  # ID: pol_id
-  # IDpix: pix_id
 
 vegetation_type_conventions:
   NATIVO: native
@@ -75,10 +73,6 @@ validation_limit_date: 01-01-2010
 
 random_seed: 0
 
-save_interval: 100
-
-weeks_after_change_offset: 5
-
 step_size: 1
 
 esn_features_dim: 104
@@ -93,7 +87,12 @@ esn_sr: 0.9
 
 weeks_per_year: 52
 
-fault_detection_forecasted_steps: 52
+change_detection_forecasted_steps: 52
+
+change_detection_num_processes: 8
+
+offset_values:
+  - 5
 
 N_values:
   - 3
@@ -101,35 +100,35 @@ N_values:
   - 5
   - 6
   - 7
-  - 8
-  - 9
-  - 10
-  - 11
-  - 12
-  - 13
-  - 14
-  - 15
-  - 16
-  - 17
-  - 18
+  # - 8
+  # - 9
+  # - 10
+  # - 11
+  # - 12
+  # - 13
+  # - 14
+  # - 15
+  # - 16
+  # - 17
+  # - 18
 
 k_values:
- - 0.80
- - 0.81
- - 0.82
- - 0.83
- - 0.84
- - 0.85
- - 0.86
- - 0.87
- - 0.88
- - 0.89
- - 0.90
- - 0.91
- - 0.92
- - 0.93
- - 0.94
- - 0.95
+#  - 0.80
+#  - 0.81
+#  - 0.82
+#  - 0.83
+#  - 0.84
+#  - 0.85
+#  - 0.86
+#  - 0.87
+#  - 0.88
+#  - 0.89
+#  - 0.90
+#  - 0.91
+#  - 0.92
+#  - 0.93
+#  - 0.94
+#  - 0.95
  - 0.96
  - 0.97
  - 0.98
